@@ -15,26 +15,26 @@ table = client.open(MAIN_TABLE)
 
 # get programs DataFrame
 def get_programs_df():
-    return get_df('Programs')
+    return __get_df('Programs')
 
 
 # get professors DataFrame
 def get_professors_df():
-    return get_df('Professors')
+    return __get_df('Professors')
 
 
 # get managers DataFrame
 def get_managers_df():
-    return get_df('Managers')
+    return __get_df('Managers')
 
 
 # get 5stars DataFrame
 def get_service_df():
-    return get_df('Five Stars')
+    return __get_df('Five Stars')
 
 
 # get DataFrame from google sheet
-def get_df(sheet_name):
+def __get_df(sheet_name):
     sheet = table.worksheet(sheet_name)
 
     data = np.array(sheet.get_all_values())
