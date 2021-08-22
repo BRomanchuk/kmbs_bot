@@ -4,7 +4,7 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-from config.constants import SCOPE, JSON_ROUTE, MAIN_TABLE
+from settings.constants import SCOPE, JSON_ROUTE, MAIN_TABLE
 
 
 # open main table
