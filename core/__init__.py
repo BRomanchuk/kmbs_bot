@@ -1,5 +1,8 @@
 from flask import Flask
 
+from structure.school import School
+
+school = School()
 
 def create_app():
     """Construct the core application."""

@@ -1,7 +1,7 @@
 from routes import bot
 from settings.constants import PROGRAMS_COMMANDS
 
-from controlers.message_handler import get_start_message, update_data, process_programs_commands, process_text
+from controlers.message_handler import get_start_message, update_data, process_program_types, process_text
 
 
 @bot.message_handler(commands=["start", "help"])
@@ -16,7 +16,7 @@ def update_data(message):
 
 @bot.message_handler(commands=PROGRAMS_COMMANDS)
 def programs_commands(message):
-    process_programs_commands(bot, message)
+    process_program_types(bot, message)
 
 
 @bot.message_handler(content_types=["text"])

@@ -15,8 +15,8 @@ class School:
         self.programs_df = get_programs_df()
         self.managers_df = get_managers_df()
 
-        self.professors = get_professors_df()
-        self.five_stars = get_service_df()
+        self.professors_df = get_professors_df()
+        self.five_stars_df = get_service_df()
 
     # get programs by their type
     def get_programs_by_type(self, program_type):
