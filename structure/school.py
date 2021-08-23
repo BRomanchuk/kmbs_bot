@@ -20,11 +20,11 @@ class School:
 
     # get programs by their type
     def get_programs_by_type(self, program_type):
-        return self.__get_programs_by_entity(program_type, '')
+        return self.__get_programs_by_entity(program_type, 'Категорія')
 
     # get programs by their manager
     def get_programs_by_manager(self, manager):
-        return self.__get_programs_by_entity(manager, '')
+        return self.__get_programs_by_entity(manager, '👩‍💼 Менеджер')
 
     # get programs by any feature it has
     def __get_programs_by_entity(self, obj, feature):
