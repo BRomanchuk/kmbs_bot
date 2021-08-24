@@ -1,21 +1,26 @@
-# returns the list of all possible meanings of message
-def get_all_message_variants(msg, list_of_programs_and_professors):
+def get_message_variants(msg, programs_and_staff):
+    """
+    returns the list of all possible meanings of message
+    :param msg: str
+    :param programs_and_staff: np.array
+    :return: list
+    """
     list_of_message_variants = [
-        get_program_from_abbreviation(msg, list_of_programs_and_professors),
-        get_program_from_abbreviation(eng_ukr_keyboard(msg, '>'), list_of_programs_and_professors),
+        __get_program_from_abbreviation(msg, programs_and_staff),
+        __get_program_from_abbreviation(__eng_ukr_keyboard(msg, '>'), programs_and_staff),
         msg,
-        eng_ukr_keyboard(msg, '>'),
-        eng_ukr_keyboard(msg, '<'),
-        rus_to_ukr_keyboard(msg),
-        eng_ukr_keyboard(rus_to_ukr_keyboard(msg), '<'),
-        eng_ukr_translit(msg, '<'),
-        eng_ukr_translit(msg, '>')
+        __eng_ukr_keyboard(msg, '>'),
+        __eng_ukr_keyboard(msg, '<'),
+        __rus_to_ukr_keyboard(msg),
+        __eng_ukr_keyboard(__rus_to_ukr_keyboard(msg), '<'),
+        __eng_ukr_transliteration(msg, '<'),
+        __eng_ukr_transliteration(msg, '>')
     ]
     return list_of_message_variants
 
 
 # converts word from eng to ukr keyboard or otherwise depending on direction of converting
-def eng_ukr_keyboard(word, direction):
+def __eng_ukr_keyboard(word, direction):
     # exception for CEO Development Program
     if 'сео' in word or 'seo' in word:
         return 'ceo development program'
@@ -47,7 +52,7 @@ def eng_ukr_keyboard(word, direction):
 
 
 # converts word written in russian keyboard into word written in ukrainian keyboard
-def rus_to_ukr_keyboard(rus_word):
+def __rus_to_ukr_keyboard(rus_word):
     rus_word = str.lower(rus_word)
 
     rus_unique = 'ъыэ'
@@ -64,8 +69,8 @@ def rus_to_ukr_keyboard(rus_word):
 
 
 # converts word from eng to ukr transliteration or otherwise depending on direction of converting
-def eng_ukr_translit(word_to_translit, direction='>'):
-    word_to_translit = str.lower(word_to_translit)
+def __eng_ukr_transliteration(word_to_transliterate, direction='>'):
+    word_to_transliterate = str.lower(word_to_transliterate)
 
     ukr_chars = 'абвґдезіклмнопрстуфх'
     eng_chars = 'abvgdeziklmnoprstufh'
@@ -81,18 +86,18 @@ def eng_ukr_translit(word_to_translit, direction='>'):
         from_chars = ukr_chars
         to_chars = eng_chars
 
-    for i in range(len(word_to_translit)):
+    for i in range(len(word_to_transliterate)):
         # if character not in char set, return first word
-        if word_to_translit[i] not in from_chars:
-            return word_to_translit
-        ind = from_chars.index(word_to_translit[i])
+        if word_to_transliterate[i] not in from_chars:
+            return word_to_transliterate
+        ind = from_chars.index(word_to_transliterate[i])
         res_word = res_word + to_chars[ind]
 
     return res_word
 
 
 # returns name of program based on its abbreviation
-def get_program_from_abbreviation(abbreviation, programs_arr):
+def __get_program_from_abbreviation(abbreviation, programs_arr):
     abbr_arr = [''] * len(programs_arr)
     for i in range(len(programs_arr)):
         for word in str.split(programs_arr[i]):

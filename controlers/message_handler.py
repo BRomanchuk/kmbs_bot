@@ -1,9 +1,12 @@
+import numpy as np
+
 from telebot.types import ReplyKeyboardMarkup
 
 from core import school
 from data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
 from settings.constants import START_MESSAGE
+from settings.srting_processing import get_message_variants
 
 
 # send start message
@@ -35,4 +38,5 @@ def process_program_type(bot, message):
 
 
 def process_text(bot, message):
-    pass
+    programs_and_staff = np.concat([school.get_programs(), school.get_programs(), school.get_managers(), school.get_five_stars()])
+    message_variants = get_message_variants(message, programs_and_staff)
