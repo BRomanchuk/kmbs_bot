@@ -18,6 +18,11 @@ class School:
         self.professors_df = get_professors_df()
         self.five_stars_df = get_service_df()
 
+    # get program by its name
+    def get_program(self, name):
+        program_mask = (self.programs_df['Програма'] == name)
+        return self.programs_df.loc[program_mask]
+
     # get programs by their type
     def get_programs_by_type(self, program_type):
         return self.__get_programs_by_entity(program_type, 'Категорія')

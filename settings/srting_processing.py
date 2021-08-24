@@ -1,16 +1,21 @@
 # returns the list of all possible meanings of message
 def get_all_message_variants(msg, list_of_programs_and_professors):
-    list_of_message_variants = [get_program_from_abbreviation(msg, list_of_programs_and_professors ),
-                                get_program_from_abbreviation(eng_ukr_keyboard(msg, '>'), list_of_programs_and_professors ), msg,
-                                eng_ukr_keyboard(msg, '>'), eng_ukr_keyboard(msg, '<'), rus_to_ukr_keyboard(msg),
-                                eng_ukr_keyboard(rus_to_ukr_keyboard(msg), '<'), eng_ukr_translit(msg, '<'),
-                                eng_ukr_translit(msg, '>')]
+    list_of_message_variants = [
+        get_program_from_abbreviation(msg, list_of_programs_and_professors),
+        get_program_from_abbreviation(eng_ukr_keyboard(msg, '>'), list_of_programs_and_professors),
+        msg,
+        eng_ukr_keyboard(msg, '>'),
+        eng_ukr_keyboard(msg, '<'),
+        rus_to_ukr_keyboard(msg),
+        eng_ukr_keyboard(rus_to_ukr_keyboard(msg), '<'),
+        eng_ukr_translit(msg, '<'),
+        eng_ukr_translit(msg, '>')
+    ]
     return list_of_message_variants
 
 
 # converts word from eng to ukr keyboard or otherwise depending on direction of converting
 def eng_ukr_keyboard(word, direction):
-
     # exception for CEO Development Program
     if 'сео' in word or 'seo' in word:
         return 'ceo development program'
