@@ -4,6 +4,7 @@ from structure.school import School
 
 school = School()
 
+
 def create_app():
     """Construct the core application."""
     app = Flask(__name__)

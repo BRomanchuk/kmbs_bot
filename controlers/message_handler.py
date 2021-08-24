@@ -9,14 +9,24 @@ from settings.constants import START_MESSAGE
 from settings.srting_processing import get_message_variants
 
 
-# send start message
 def get_start_message(bot, message):
+    """
+    send start message
+    :param bot: telebot.Telebot
+    :param message: str
+    :return:
+    """
     start_message = "Привіт, " + str(message.from_user.first_name) + "!\n\n" + START_MESSAGE
     bot.send_message(message.chat.id, start_message)
 
 
-# update all dataframes from google sheets
 def update_data(bot, message):
+    """
+    update all dataframes from google sheets
+    :param bot: telebot.Telebot
+    :param message:
+    :return:
+    """
     school.programs_df = get_programs_df()
     school.professors_df = get_professors_df()
     school.five_stars_df = get_service_df()
@@ -25,8 +35,13 @@ def update_data(bot, message):
     bot.send_message(message.chat.id, "✅ оновлено")
 
 
-# get programs of the certain type and make reply markup of them
 def process_program_type(bot, message):
+    """
+    send markup with programs of certain type
+    :param bot: telebot.Telebot
+    :param message:
+    :return:
+    """
     program_type = message.text[1:]
     programs = school.get_programs_by_type(program_type=program_type)
 
@@ -38,5 +53,15 @@ def process_program_type(bot, message):
 
 
 def process_text(bot, message):
+    """
+    process text message from user
+    :param bot: telebot.Telebot
+    :param message:
+    :return:
+    """
     programs_and_staff = np.concat([school.get_programs(), school.get_programs(), school.get_managers(), school.get_five_stars()])
     message_variants = get_message_variants(message, programs_and_staff)
+
+    for msg in message_variants:
+        # TODO look at kmbs_tg
+        pass
