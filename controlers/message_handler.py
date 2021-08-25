@@ -60,7 +60,7 @@ def process_text(bot, message):
     :param message:
     :return:
     """
-
+    # list of arrays of names of school entities
     school_entities = [
         school.get_programs(),
         school.get_professors(),
@@ -68,6 +68,7 @@ def process_text(bot, message):
         school.get_five_stars()
     ]
 
+    # list of dataframes of school entities
     school_entities_dataframes = [
         school.programs_df,
         school.professors_df,
@@ -75,9 +76,13 @@ def process_text(bot, message):
         school.five_stars_df
     ]
 
+    # flat array of every program and person in the school
     programs_and_staff_flat = np.concatenate([x for x in school_entities])
+
+    # list of all message variants
     message_variants = get_message_variants(message, programs_and_staff_flat)
 
+    # init reply message and markup
     reply_markup = ReplyKeyboardMarkup(one_time_keyboard=True)
     reply_message = ""
 
@@ -116,5 +121,5 @@ def __get_indices_of_items(arr, substr):
 def __construct_message_from_dataframe(df):
     message = ""
     for col in df.columns:
-        message += "<b>" + col + ":</b>\n" + df[col] + "\n\n"
+        message += "<b>" + str(col) + ":</b>\n" + str(df.iloc[0][col]) + "\n\n"
     return message
