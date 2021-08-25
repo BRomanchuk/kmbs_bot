@@ -100,6 +100,7 @@ def process_text(bot, message):
 
     bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 
+
 # get indices of items in array that contain substr as a substring
 def __get_indices_of_items(arr, substr):
     indices = np.array(arr.shape[0])
