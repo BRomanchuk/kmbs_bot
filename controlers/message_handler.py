@@ -92,7 +92,12 @@ def process_text(bot, message):
         for i in range(len(school_entities)):
             indices_of_items = __get_indices_of_items(school_entities[i], msg)
             if indices_of_items.shape[0] == 1:
+                # construct the str message from the dataframe row
                 reply_message = __construct_message_from_dataframe(school_entities_dataframes[i][indices_of_items[0]])
+                # get items for the markup (if the dataframe is either programs or managers
+                items_for_markup = __get_items_for_markup(school_entities_dataframes[i], indices_of_items[0])
+                for item in items_for_markup:
+                    reply_markup.row(item)
                 break
             elif indices_of_items.shape[0] > 1:
                 reply_message = "Choose your fighter:"
@@ -123,3 +128,17 @@ def __construct_message_from_dataframe(df):
     for col in df.columns:
         message += "<b>" + str(col) + ":</b>\n" + str(df.iloc[0][col]) + "\n\n"
     return message
+
+
+# get items for the markup from the dataframe
+def __get_items_for_markup(df, index):
+    if df == school.programs_df:
+        return df['Professors'].iloc[index].split('\n')
+    if df == school.managers_df:
+        manager = df['Manager'].iloc[index]
+        programs_of_manager = []
+        for row in school.programs_df:
+            if manager in row['Manager']:
+                programs_of_manager.append(row['Program'])
+        return programs_of_manager
+    return []
