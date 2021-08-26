@@ -4,9 +4,9 @@ from telebot.types import ReplyKeyboardMarkup
 from telegram import ParseMode
 
 from core import school
-from data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
+from settings.data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
-from settings.constants import START_MESSAGE, programs_columns, professors_columns, managers_columns
+from settings.constants import START_MESSAGE, programs_columns, managers_columns
 from settings.srting_processing import get_message_variants
 
 

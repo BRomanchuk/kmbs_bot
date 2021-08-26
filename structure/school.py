@@ -1,6 +1,6 @@
 import numpy as np
 
-from data_loader import get_programs_df, get_service_df, get_managers_df, get_professors_df
+from settings.data_loader import get_programs_df, get_service_df, get_managers_df, get_professors_df
 from settings.constants import programs_columns, professors_columns, managers_columns, five_stars_columns
 
 
