@@ -1,6 +1,7 @@
 import numpy as np
 
 from data_loader import get_programs_df, get_service_df, get_managers_df, get_professors_df
+from settings.constants import programs_columns, professors_columns, managers_columns, five_stars_columns
 
 
 class School:
@@ -23,28 +24,28 @@ class School:
         get array of programs names
         :return: np.array
         """
-        return self.programs_df['Програма'].to_numpy()
+        return self.programs_df[programs_columns['name']].to_numpy()
 
     def get_professors(self):
         """
         get array of professors names
         :return: np.array
         """
-        return self.professors_df['Викладач'].to_numpy()
+        return self.professors_df[professors_columns['name']].to_numpy()
 
     def get_managers(self):
         """
         get array of managers names
         :return: np.array
         """
-        return self.managers_df['Менеджер'].to_numpy()
+        return self.managers_df[managers_columns['name']].to_numpy()
 
     def get_five_stars(self):
         """
         get array of five_stars names
         :return: np.array
         """
-        return self.five_stars_df['5stars'].to_numpy()
+        return self.five_stars_df[five_stars_columns['name']].to_numpy()
 
     def get_program(self, name):
         """
@@ -52,7 +53,7 @@ class School:
         :param name: str
         :return: pd.DataFrame
         """
-        program_mask = (self.programs_df['Програма'] == name)
+        program_mask = (self.programs_df[programs_columns['name']] == name)
         return self.programs_df.loc[program_mask]
 
     def get_programs_by_type(self, program_type):
@@ -61,7 +62,7 @@ class School:
         :param program_type: str
         :return: np.array
         """
-        return self.__get_programs_by_entity(program_type, 'Категорія')
+        return self.__get_programs_by_entity(program_type, programs_columns['type'])
 
     def get_programs_by_manager(self, manager):
         """
@@ -69,7 +70,7 @@ class School:
         :param manager: str
         :return: np.array
         """
-        return self.__get_programs_by_entity(manager, '👩‍💼 Менеджер')
+        return self.__get_programs_by_entity(manager, managers_columns['name'])
 
     # get programs by any feature it has
     def __get_programs_by_entity(self, obj, feature):
@@ -79,4 +80,4 @@ class School:
             if obj in self.programs_df[feature].iloc[i]:
                 programs_mask[i] = True
 
-        return self.programs_df.loc[programs_mask, 'Програма'].to_numpy()
+        return self.programs_df.loc[programs_mask, programs_columns['name']].to_numpy()

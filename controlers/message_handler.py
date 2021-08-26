@@ -6,7 +6,7 @@ from telegram import ParseMode
 from core import school
 from data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
-from settings.constants import START_MESSAGE
+from settings.constants import START_MESSAGE, programs_columns, professors_columns, managers_columns
 from settings.srting_processing import get_message_variants
 
 
@@ -133,12 +133,12 @@ def __construct_message_from_dataframe(df):
 # get items for the markup from the dataframe
 def __get_items_for_markup(df, index):
     if df == school.programs_df:
-        return df['Professors'].iloc[index].split('\n')
+        return df[programs_columns['professors']].iloc[index].split('\n')
     if df == school.managers_df:
-        manager = df['Manager'].iloc[index]
+        manager = df[managers_columns['name']].iloc[index]
         programs_of_manager = []
         for row in school.programs_df:
-            if manager in row['Manager']:
-                programs_of_manager.append(row['Program'])
+            if manager in row[programs_columns['manager']]:
+                programs_of_manager.append(row[programs_columns['name']])
         return programs_of_manager
     return []

@@ -5,7 +5,6 @@ import telebot
 
 from settings.constants import TOKEN, HEROKU_APP
 
-
 bot = telebot.TeleBot(TOKEN)
 
 
