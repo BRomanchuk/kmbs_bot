@@ -1,7 +1,7 @@
 from core.routes import bot
 from settings.constants import PROGRAMS_COMMANDS
 
-from controlers.message_handler import get_start_message, update_data, process_program_type, process_text
+from controllers.message_processor import get_start_message, update_data, process_program_type, process_text
 
 
 @bot.message_handler(commands=["start", "help"])

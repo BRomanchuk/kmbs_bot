@@ -11,7 +11,7 @@ def create_app():
 
     with app.app_context():
         # Imports
-        from . import routes
-        from . import message_handlers
+        from core import routes
+        from core import message_handlers
 
         return app
