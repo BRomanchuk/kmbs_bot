@@ -77,7 +77,7 @@ class School:
         programs_mask = np.zeros(self.programs_df.shape[0]) == 1
 
         for i in range(self.programs_df.shape[0]):
-            if obj in self.programs_df[feature].iloc[i]:
+            if obj.lower() in self.programs_df[feature].iloc[i].lower():
                 programs_mask[i] = True
 
         return self.programs_df.loc[programs_mask, programs_columns['name']].to_numpy()

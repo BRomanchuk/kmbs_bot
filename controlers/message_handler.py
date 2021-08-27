@@ -108,6 +108,9 @@ def process_text(bot, message):
         if len(reply_message) > 0:
             break
 
+    if len(reply_message) == 0:
+        reply_message = 'Nothing to show :('
+
     bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 
 
@@ -116,7 +119,7 @@ def __get_indices_of_items(arr, substr):
     indices = np.array(arr.shape[0])
     length_index = 0
     for i in range(arr.shape[0]):
-        if substr in arr[i]:
+        if substr.lower() in arr[i].lower():
             indices[length_index] = i
             length_index += 1
     return indices[:length_index]
@@ -138,7 +141,7 @@ def __get_items_for_markup(df, index):
         manager = df[managers_columns['name']].iloc[index]
         programs_of_manager = []
         for row in school.programs_df:
-            if manager in row[programs_columns['manager']]:
+            if manager.lower() in row[programs_columns['manager']].lower():
                 programs_of_manager.append(row[programs_columns['name']])
         return programs_of_manager
     return []
