@@ -3,7 +3,6 @@ import numpy as np
 from telebot.types import ReplyKeyboardMarkup
 from telegram import ParseMode
 
-from core import school
 from settings.data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
 from settings.constants import START_MESSAGE, programs_columns, managers_columns
@@ -14,18 +13,19 @@ def get_start_message(bot, message):
     """
     send start message
     :param bot: telebot.Telebot
-    :param message: str
+    :param message:
     :return:
     """
     start_message = "Привіт, " + str(message.from_user.first_name) + "!\n\n" + START_MESSAGE
     bot.send_message(message.chat.id, start_message)
 
 
-def update_data(bot, message):
+def get_updated_data(bot, message, school):
     """
     update all dataframes from google sheets
     :param bot: telebot.Telebot
     :param message:
+    :param school
     :return:
     """
     school.programs_df = get_programs_df()
@@ -36,11 +36,12 @@ def update_data(bot, message):
     bot.send_message(message.chat.id, "✅ оновлено")
 
 
-def process_program_type(bot, message):
+def process_program_type(bot, message, school):
     """
     send markup with programs of certain type
     :param bot: telebot.Telebot
     :param message:
+    :param school
     :return:
     """
     program_type = message.text[1:]
@@ -53,11 +54,12 @@ def process_program_type(bot, message):
     bot.send_message(message.chat.id, "Програми типу " + message.text + ":", reply_markup=reply_markup)
 
 
-def process_text(bot, message):
+def get_processed_text(bot, message, school):
     """
     process text message from user
     :param bot: telebot.Telebot
     :param message:
+    :param school
     :return:
     """
     # list of arrays of names of school entities
@@ -95,7 +97,7 @@ def process_text(bot, message):
                 # construct the str message from the dataframe row
                 reply_message = __construct_message_from_dataframe(school_entities_dataframes[i][indices_of_items[0]])
                 # get items for the markup (if the dataframe is either programs or managers
-                items_for_markup = __get_items_for_markup(school_entities_dataframes[i], indices_of_items[0])
+                items_for_markup = __get_items_for_markup(school_entities_dataframes[i], indices_of_items[0], school)
                 for item in items_for_markup:
                     reply_markup.row(item)
                 break
@@ -134,7 +136,7 @@ def __construct_message_from_dataframe(df):
 
 
 # get items for the markup from the dataframe
-def __get_items_for_markup(df, index):
+def __get_items_for_markup(df, index, school):
     if df == school.programs_df:
         return df[programs_columns['professors']].iloc[index].split('\n')
     if df == school.managers_df:
