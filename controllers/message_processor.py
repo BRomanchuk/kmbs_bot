@@ -137,9 +137,9 @@ def __construct_message_from_dataframe(df):
 
 # get items for the markup from the dataframe
 def __get_items_for_markup(df, index, school):
-    if df.columns.shape[0] == len(programs_columns) and np.all(df.columns == school.programs_df.columns):
+    if df.columns.shape[0] == school.programs_df.columns.shape[0] and np.all(df.columns == school.programs_df.columns):
         return df[programs_columns['professors']].iloc[index].split('\n')
-    if df.columns.shape[0] == len(managers_columns) and np.all(df.columns == school.managers_df.columns):
+    if df.columns.shape[0] == school.managers_df.columns.shape[0] and np.all(df.columns == school.managers_df.columns):
         manager = df[managers_columns['name']].iloc[index]
         programs_of_manager = []
         for i in range(school.programs_df.shape[0]):
