@@ -71,7 +71,7 @@ def get_processed_text(bot, message, school):
     ]
 
     # list of dataframes of school entities
-    school_entities_dataframes = [
+    school_dataframes = [
         school.programs_df,
         school.professors_df,
         school.managers_df,
@@ -82,7 +82,7 @@ def get_processed_text(bot, message, school):
     programs_and_staff_flat = np.concatenate([x for x in school_entities])
 
     # list of all message variants
-    message_variants = get_message_variants(message, programs_and_staff_flat)
+    message_variants = get_message_variants(message.text, programs_and_staff_flat)
 
     # init reply message and markup
     reply_markup = ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -95,9 +95,9 @@ def get_processed_text(bot, message, school):
             indices_of_items = __get_indices_of_items(school_entities[i], msg)
             if indices_of_items.shape[0] == 1:
                 # construct the str message from the dataframe row
-                reply_message = __construct_message_from_dataframe(school_entities_dataframes[i][indices_of_items[0]])
+                reply_message = __construct_message_from_dataframe(school_dataframes[i].iloc[[indices_of_items[0]]])
                 # get items for the markup (if the dataframe is either programs or managers
-                items_for_markup = __get_items_for_markup(school_entities_dataframes[i], indices_of_items[0], school)
+                items_for_markup = __get_items_for_markup(school_dataframes[i], indices_of_items[0], school)
                 for item in items_for_markup:
                     reply_markup.row(item)
                 break
@@ -118,7 +118,7 @@ def get_processed_text(bot, message, school):
 
 # get indices of items in array that contain substr as a substring
 def __get_indices_of_items(arr, substr):
-    indices = np.array(arr.shape[0])
+    indices = np.zeros(arr.shape[0], dtype=int)
     length_index = 0
     for i in range(arr.shape[0]):
         if substr.lower() in arr[i].lower():
@@ -137,9 +137,9 @@ def __construct_message_from_dataframe(df):
 
 # get items for the markup from the dataframe
 def __get_items_for_markup(df, index, school):
-    if df == school.programs_df:
+    if df.columns.shape[0] == len(programs_columns) and np.all(df.columns == school.programs_df.columns):
         return df[programs_columns['professors']].iloc[index].split('\n')
-    if df == school.managers_df:
+    if df.columns.shape[0] == len(managers_columns) and np.all(df.columns == school.managers_df.columns):
         manager = df[managers_columns['name']].iloc[index]
         programs_of_manager = []
         for row in school.programs_df:
