@@ -5,7 +5,8 @@ from telegram import ParseMode
 
 from settings.data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
-from settings.constants import START_MESSAGE, SCHEDULE_LINK, programs_columns, managers_columns
+from settings.constants import START_MESSAGE, SCHEDULE_LINK, programs_columns, managers_columns, professors_columns, \
+    five_stars_columns
 from settings.srting_processing import get_message_variants
 
 
@@ -72,8 +73,24 @@ def get_staff(bot, message, school):
     :param school:
     :return:
     """
-    # TODO send staff_list
-    pass
+    reply_markup = ReplyKeyboardMarkup(one_time_keyboard=True)
+    if message.text == "/professors":
+        reply_message = "👨‍🏫 List of professors:\n"
+        for professor in school.professors_df[professors_columns['name']]:
+            reply_markup.row(professor)
+            reply_message += "\n" + professor
+    elif message.text == "/managers":
+        reply_message = "👩‍💼 List of managers:\n"
+        for manager in school.managers_df[managers_columns['name']]:
+            reply_markup.row(manager)
+            reply_message += "\n" + manager
+    else:
+        reply_message = "👷‍♂️List of service staff:\n"
+        for five_stars in school.five_stars_df[five_stars_columns['name']]:
+            reply_markup.row(five_stars)
+            reply_message += "\n" + five_stars
+
+    bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup)
 
 
 def get_processed_text(bot, message, school):
