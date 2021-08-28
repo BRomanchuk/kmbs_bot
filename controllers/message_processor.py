@@ -142,8 +142,8 @@ def __get_items_for_markup(df, index, school):
     if df.columns.shape[0] == len(managers_columns) and np.all(df.columns == school.managers_df.columns):
         manager = df[managers_columns['name']].iloc[index]
         programs_of_manager = []
-        for row in school.programs_df:
-            if manager.lower() in row[programs_columns['manager']].lower():
-                programs_of_manager.append(row[programs_columns['name']])
+        for i in range(school.programs_df.shape[0]):
+            if manager.lower() in school.programs_df[programs_columns['manager']].iloc[i].lower():
+                programs_of_manager.append(school.programs_df[programs_columns['name']].iloc[i])
         return programs_of_manager
     return []
