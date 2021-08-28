@@ -5,7 +5,7 @@ from telegram import ParseMode
 
 from settings.data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
-from settings.constants import START_MESSAGE, programs_columns, managers_columns
+from settings.constants import START_MESSAGE, SCHEDULE_LINK, programs_columns, managers_columns
 from settings.srting_processing import get_message_variants
 
 
@@ -52,6 +52,28 @@ def process_program_type(bot, message, school):
         reply_markup.add(program)
 
     bot.send_message(message.chat.id, "Програми типу " + message.text + ":", reply_markup=reply_markup)
+
+
+def get_schedule(bot, message):
+    """
+    send link to the sheet with schedule for the next week
+    :param bot:
+    :param message:
+    :return:
+    """
+    bot.send_message(message.chat.id, SCHEDULE_LINK)
+
+
+def get_staff(bot, message, school):
+    """
+    send markup with the list of staff of the certain type
+    :param bot: telebot.Telebot
+    :param message:
+    :param school:
+    :return:
+    """
+    # TODO send staff_list
+    pass
 
 
 def get_processed_text(bot, message, school):
