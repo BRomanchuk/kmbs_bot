@@ -34,7 +34,7 @@ def get_updated_data(bot, message, school):
     school.five_stars_df = get_service_df()
     school.managers_df = get_managers_df()
 
-    bot.send_message(message.chat.id, "✅ оновлено")
+    bot.send_message(message.chat.id, "✅ інформацію оновлено")
 
 
 def process_program_type(bot, message, school):
@@ -62,7 +62,8 @@ def get_schedule(bot, message):
     :param message:
     :return:
     """
-    bot.send_message(message.chat.id, SCHEDULE_LINK)
+    reply_message = "🗓 Pозклад тижня:\n\n" + SCHEDULE_LINK
+    bot.send_message(message.chat.id, reply_message)
 
 
 def get_staff(bot, message, school):
@@ -75,17 +76,17 @@ def get_staff(bot, message, school):
     """
     reply_markup = ReplyKeyboardMarkup(one_time_keyboard=True)
     if message.text == "/professors":
-        reply_message = "👨‍🏫 List of professors:\n"
+        reply_message = "👨‍🏫 Викладачі:\n"
         for professor in school.professors_df[professors_columns['name']]:
             reply_markup.row(professor)
             reply_message += "\n" + professor
     elif message.text == "/managers":
-        reply_message = "👩‍💼 List of managers:\n"
+        reply_message = "👩‍💼 Менеджери:\n"
         for manager in school.managers_df[managers_columns['name']]:
             reply_markup.row(manager)
             reply_message += "\n" + manager
     else:
-        reply_message = "👷‍♂️List of service staff:\n"
+        reply_message = "👷‍♂️5stars:\n"
         for five_stars in school.five_stars_df[five_stars_columns['name']]:
             reply_markup.row(five_stars)
             reply_message += "\n" + five_stars
@@ -141,7 +142,7 @@ def get_processed_text(bot, message, school):
                     reply_markup.row(item)
                 break
             elif indices_of_items.shape[0] > 1:
-                reply_message = "Choose your fighter:"
+                reply_message = "Результати вашого запиту:"
                 for j in indices_of_items:
                     reply_markup.row(school_entities[i][j])
                 break
@@ -150,7 +151,7 @@ def get_processed_text(bot, message, school):
             break
 
     if len(reply_message) == 0:
-        reply_message = 'Nothing to show :('
+        reply_message = 'Нічого не знайшлось :('
 
     bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 

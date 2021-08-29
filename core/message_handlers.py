@@ -19,7 +19,6 @@ def init_message_handlers(bot, school):
 
     @bot.message_handler(commands=["professors", "managers", "five_stars"])
     def staff_commands(message):
-        # TODO process staff commands
         get_staff(bot, message, school)
 
     @bot.message_handler(commands=["schedule"])
