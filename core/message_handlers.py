@@ -27,7 +27,7 @@ def init_message_handlers(bot, school):
 
     @bot.message_handler(commands=["info"])
     def info(message):
-        get_resources_links
+        get_resources_links(bot, message)
 
     @bot.message_handler(content_types=["text"])
     def process_text(message):
