@@ -6,7 +6,7 @@ from telegram import ParseMode
 from settings.data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
 from settings.constants import START_MESSAGE, SCHEDULE_LINK, programs_columns, managers_columns, professors_columns, \
-    five_stars_columns
+    five_stars_columns, school_resources
 from settings.srting_processing import get_message_variants
 
 
@@ -154,6 +154,19 @@ def get_processed_text(bot, message, school):
         reply_message = 'Нічого не знайшлось :('
 
     bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+
+
+def get_resources_links(bot, message):
+    """
+    send links to different resources of school
+    :param bot:
+    :param message:
+    :return:
+    """
+    reply_message = "School resources:\n"
+    for key in school_resources:
+        reply_message += "\n" + key + ": " + school_resources[key]
+    bot.send_message(message.chat.id, reply_message)
 
 
 # get indices of items in array that contain substr as a substring
