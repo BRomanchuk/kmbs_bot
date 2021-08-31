@@ -6,7 +6,7 @@ from telegram import ParseMode
 from settings.data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
 from settings.constants import START_MESSAGE, SCHEDULE_LINK, programs_columns, managers_columns, professors_columns, \
-    five_stars_columns, school_resources
+    five_stars_columns, useful_links
 from settings.srting_processing import get_message_variants
 
 
@@ -156,16 +156,16 @@ def get_processed_text(bot, message, school):
     bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 
 
-def get_resources_links(bot, message):
+def get_useful_links(bot, message):
     """
     send links to different resources of school
     :param bot:
     :param message:
     :return:
     """
-    reply_message = "School resources:\n"
-    for key in school_resources:
-        reply_message += "\n" + key + ": " + school_resources[key]
+    reply_message = "🌐 Корисні посилання:\n"
+    for key in useful_links:
+        reply_message += "\n" + key + ": " + useful_links[key]
     bot.send_message(message.chat.id, reply_message)
 
 

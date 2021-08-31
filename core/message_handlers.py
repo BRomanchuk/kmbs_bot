@@ -1,7 +1,7 @@
 from settings.constants import PROGRAMS_COMMANDS
 
 from controllers.message_processor import get_start_message, get_updated_data, process_program_type, get_schedule, \
-    get_staff, get_processed_text, get_resources_links
+    get_staff, get_processed_text, get_useful_links
 
 
 def init_message_handlers(bot, school):
@@ -25,9 +25,9 @@ def init_message_handlers(bot, school):
     def schedule(message):
         get_schedule(bot, message)
 
-    @bot.message_handler(commands=["info"])
-    def info(message):
-        get_resources_links(bot, message)
+    @bot.message_handler(commands=["links"])
+    def links(message):
+        get_useful_links(bot, message)
 
     @bot.message_handler(content_types=["text"])
     def process_text(message):
