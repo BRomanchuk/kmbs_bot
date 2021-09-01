@@ -6,7 +6,7 @@ from telegram import ParseMode
 from settings.data_loader import get_managers_df, get_programs_df, get_service_df, get_professors_df
 
 from settings.constants import START_MESSAGE, SCHEDULE_LINK, programs_columns, managers_columns, professors_columns, \
-    five_stars_columns, useful_links
+    five_stars_columns, useful_links, LOG_ID
 from settings.srting_processing import get_message_variants
 
 
@@ -19,6 +19,8 @@ def get_start_message(bot, message):
     """
     start_message = "Привіт, " + str(message.from_user.first_name) + "!\n\n" + START_MESSAGE
     bot.send_message(message.chat.id, start_message)
+    # log message
+    __log_message(bot, message)
 
 
 def get_updated_data(bot, message, school):
@@ -35,6 +37,8 @@ def get_updated_data(bot, message, school):
     school.managers_df = get_managers_df()
 
     bot.send_message(message.chat.id, "✅ інформацію оновлено")
+    # log message
+    __log_message(bot, message)
 
 
 def process_program_type(bot, message, school):
@@ -53,6 +57,8 @@ def process_program_type(bot, message, school):
         reply_markup.add(program)
 
     bot.send_message(message.chat.id, "Програми типу " + message.text + ":", reply_markup=reply_markup)
+    # log message
+    __log_message(bot, message)
 
 
 def get_schedule(bot, message):
@@ -64,6 +70,8 @@ def get_schedule(bot, message):
     """
     reply_message = "🗓 Pозклад тижня:\n\n" + SCHEDULE_LINK
     bot.send_message(message.chat.id, reply_message)
+    # log message
+    __log_message(bot, message)
 
 
 def get_staff(bot, message, school):
@@ -92,6 +100,8 @@ def get_staff(bot, message, school):
             reply_message += "\n" + five_stars
 
     bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup)
+    # log message
+    __log_message(bot, message)
 
 
 def get_processed_text(bot, message, school):
@@ -153,7 +163,10 @@ def get_processed_text(bot, message, school):
     if len(reply_message) == 0:
         reply_message = 'Нічого не знайшлось :('
 
+    # send reply
     bot.send_message(message.chat.id, reply_message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
+    # log message
+    __log_message(bot, message)
 
 
 def get_useful_links(bot, message):
@@ -167,6 +180,8 @@ def get_useful_links(bot, message):
     for key in useful_links:
         reply_message += "\n" + key + ": " + useful_links[key]
     bot.send_message(message.chat.id, reply_message)
+    # log message
+    __log_message(bot, message)
 
 
 # get indices of items in array that contain substr as a substring
@@ -200,3 +215,15 @@ def __get_items_for_markup(df, index, school):
                 programs_of_manager.append(school.programs_df[programs_columns['name']].iloc[i])
         return programs_of_manager
     return []
+
+
+# log messages received by bot
+def __log_message(bot, message):
+    user_info = "id: " + str(message.from_user.id)
+    user_info += "\nfirst_name: " + str(message.from_user.first_name)
+    user_info += "\nlast_name: " + str(message.from_user.last_name)
+    user_info += "\nnickname: @" + str(message.from_user.username)
+    user_info += "\nlanguage_code: " + str(message.from_user.language_code)
+
+    message_text = "\n\nMessage:\n" + message.text
+    bot.send_message(LOG_ID, user_info + message_text)
